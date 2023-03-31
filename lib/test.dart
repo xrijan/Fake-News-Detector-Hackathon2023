@@ -11,7 +11,7 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("Test for github")),
+      body: Center(child: Text("Test by rijan")),
     );
   }
 }
