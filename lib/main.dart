@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/screen/News%20Updates/news_home.dart';
+import 'package:news_app/screen/NewsCetegory/news_category.dart';
 import 'package:news_app/test.dart';
-
 import 'colors.dart';
 
 void main() {
@@ -12,10 +13,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: Test(),
+      title: 'News Shield',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const NewsHome(),
+        '/categories':(context) => const NewsCategoryScreen(),
+        '/test' : (context) => const Test(),
+      },
     );
   }
 }
