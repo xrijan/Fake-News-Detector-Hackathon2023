@@ -31,6 +31,8 @@ class _MoreTodayHighlightsState extends State<MoreTodayHighlights> {
     getNews();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

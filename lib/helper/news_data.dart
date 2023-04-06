@@ -9,9 +9,11 @@ const API_KEY = '810dca7667b543e19007e6ee3b78b665';
 class NewsData {
   List<NewsModel> newsFromRestApi = [];
 
-  static const newsUrl =
-      'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=810dca7667b543e19007e6ee3b78b665';
+
   Future<void> getNews() async {
+
+    const newsUrl =
+        'https://newsapi.org/v2/top-headlines?country=in&apiKey=810dca7667b543e19007e6ee3b78b665';
 
     try {
     var response = await get(Uri.parse(newsUrl));
@@ -42,30 +44,34 @@ class NewsData {
 }
 
 class NewsCategories {
-  List<NewsModel> newsFromRestApi = [];
-  var apiKey =
-      'https://newsapi.org/v2/everything?q=tesla&from=2023-03-04&sortBy=publishedAt&apiKey=810dca7667b543e19007e6ee3b78b665';
+  List<NewsModel> newsFromRestApiCat = [];
 
   Future<void> getNews(String category) async {
-    var response = await get(Uri.parse(apiKey));
-    var jsonData = json.decode(response.body);
+    var apiKeyCat =
+        'https://newsapi.org/v2/top-headlines?country=in&category=$category&apiKey=810dca7667b543e19007e6ee3b78b665';
+    try {
+      var response = await get(Uri.parse(apiKeyCat));
+      var jsonData = json.decode(response.body);
 
-    if (jsonData['status'] == 'ok') {
-      jsonData['articles'].forEach((elements) {
-        if (elements['urlToImage'] != null && elements['description'] != null) {
-          //saving data to model class
-          NewsModel newsModel = NewsModel(
-              author: elements['author'],
-              title: elements['title'],
-              description: elements['description'],
-              url: elements['url'],
-              urlToImage: elements['urlToImage'],
-              publishedAt: elements['publishedAt']);
-          newsFromRestApi.add(newsModel);
-          print(newsFromRestApi);
-        }
-      });
+      if (jsonData['status'] == 'ok') {
+        jsonData['articles'].forEach((elements) {
+          if (elements['urlToImage'] != null && elements['description'] != null) {
+            //saving data to model class
+            NewsModel newsModel = NewsModel(
+                author: elements['author'],
+                title: elements['title'],
+                description: elements['description'],
+                url: elements['url'],
+                urlToImage: elements['urlToImage'],
+                publishedAt: elements['publishedAt']);
+            newsFromRestApiCat.add(newsModel);
+          }
+        });
+      }
+
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error $e');
+      }
     }
-
-  }
-}
+}}

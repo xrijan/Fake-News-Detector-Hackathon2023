@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const NewsHome(),
         '/highlights' : (context) => const MoreTodayHighlights(),
-        '/categories':(context) => const NewsCategoryScreen(),
+        '/categories':(context) => NewsCategoryScreen(),
         '/animatedList': (context) =>  const MoreTodayHighlights(),
         '/test' : (context) => const Test(),
       },
