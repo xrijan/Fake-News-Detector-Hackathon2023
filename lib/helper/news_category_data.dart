@@ -4,7 +4,7 @@ import '../model/news_category_model.dart';
 // The variable is then initialized to an empty list using <NewsCategory>[].
 
 List<NewsCategoryModel> getCategory() {
-  List<NewsCategoryModel> newsCategory = <NewsCategoryModel>[];
+  List<NewsCategoryModel> newsCategory = [];
 
   NewsCategoryModel newsCategoryModel = NewsCategoryModel(
     imageUrl: 'https://img.freepik.com/free-vector/egyptian-sphinx_53876-34778.jpg?w=1380&t=st=1680465054~exp=1680465654~hmac=c2035be07c7f678b1e8ee669a61a6cbc3733a593f47a0a272c4cf4486847c6d2',

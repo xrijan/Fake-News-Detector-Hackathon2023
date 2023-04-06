@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
+import 'package:news_app/screen/NewsCetegory/news_category.dart';
 
 class CustomNavBar extends StatefulWidget {
   final int index;
@@ -18,7 +19,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black.withAlpha(100),
+        unselectedItemColor: Colors.black,
         items: [
           BottomNavigationBarItem(
               icon: Container(
@@ -33,6 +34,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
           BottomNavigationBarItem(
               icon: IconButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, '/categories');
                 },
                 icon: const Icon(Icons.analytics),
               ),

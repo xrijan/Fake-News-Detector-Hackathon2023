@@ -28,17 +28,6 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
       ),
       child: Stack(
         children: [
-          AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                print('Icon tapped');
-                Navigator.pushNamed(context, '/categories');
-              },
-              icon: const Icon(Icons.category),
-            ),
-          ),
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -84,7 +73,6 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/categories');
                     },
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
                     child: Row(

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
 import 'package:news_app/helper/news_category_data.dart';
@@ -14,7 +13,7 @@ class NewsCategoryScreen extends StatefulWidget {
 class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
   final String imageUrl = 'https://www.thesocialhistorian.com/wp-content/uploads/2016/01/Duke_Humfreys_Library_Interior_6_Bodleian_Library_Oxford_UK_-_Diliff-2048x1523.jpg';
 
-  List<NewsCategoryModel> newsCategory = <NewsCategoryModel>[];
+  List<NewsCategoryModel> newsCategory = [];
 
   //hepls run only once whwnever app is lunched
   @override
@@ -86,7 +85,6 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/categories');
                           },
                           style: TextButton.styleFrom(padding: EdgeInsets.zero),
                           child: Row(

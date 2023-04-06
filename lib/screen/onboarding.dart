@@ -13,7 +13,7 @@ class OnBoarding extends StatefulWidget {
 class OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  const Scaffold(
       backgroundColor: CustomColor.primaryColor,
     );
   }
