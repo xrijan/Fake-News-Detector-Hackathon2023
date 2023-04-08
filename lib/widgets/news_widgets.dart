@@ -75,7 +75,11 @@ class _NewWidgetState extends State<NewWidget> {
               IconButton(
                   onPressed: () {}, icon: const Icon(Icons.share)),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print(widget.newsArticle[widget.index].url);
+                    print(widget.newsArticle[widget.index].title);
+                    print(widget.newsArticle[widget.index].description);
+                  },
                   icon: const Icon(Icons.verified_user_rounded)),
             ],
           )

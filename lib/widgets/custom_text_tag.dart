@@ -14,6 +14,9 @@ class CustomTag extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: backgroundColor,
+        border: Border.all(
+          color: Colors.black,
+        ),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/User%20Screen/profile_screen.dart';
 import 'package:news_app/screen/News%20Updates/news_home.dart';
 import 'package:news_app/screen/News%20Updates/today_highlights.dart';
 import 'package:news_app/screen/NewsCetegory/news_category.dart';
 import 'package:news_app/test.dart';
-import 'colors.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -21,8 +22,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const NewsHome(),
         '/highlights' : (context) => const MoreTodayHighlights(),
-        '/categories':(context) => NewsCategoryScreen(),
+        '/categories':(context) => const NewsCategoryScreen(),
         '/animatedList': (context) =>  const MoreTodayHighlights(),
+        '/userProfile' : (context) => const UserProfile(),
         '/test' : (context) => const Test(),
       },
     );

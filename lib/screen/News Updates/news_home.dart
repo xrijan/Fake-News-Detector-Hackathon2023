@@ -35,28 +35,97 @@ class _NewsHomeState extends State<NewsHome> {
     getNews();
   }
 
+  bool hasData = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            if (kDebugMode) {
-              print('Icon tapped');
-            }
-            Navigator.pushNamed(context, '/categories');
-          },
-          icon: const Icon(Icons.category),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: const CircleAvatar(
+              backgroundImage: NetworkImage(
+                'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
+              ),
+              backgroundColor: Colors.grey,
+              radius: 20, // change the radius to 20
+            ),
+          ),
         ),
+        actions: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: CustomColor.secondaryColor,
+              border: Border.all(
+                color: Colors.grey.shade50,
+                width: 2,
+              ),
+            ),
+            child: IconButton(
+              onPressed: () {
+                // handle search button press
+              },
+              icon: const Icon(Icons.search),
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: CustomColor.secondaryColor,
+                border: Border.all(
+                  color: Colors.grey.shade50,
+                  width: 2,
+                ),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  // handle liked button press
+                },
+                icon:Stack(
+                  children: [
+                    const Icon(Icons.favorite_border),
+                    if (hasData)
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+
       ),
       backgroundColor: CustomColor.primaryColor,
-      extendBodyBehindAppBar: true,
       bottomNavigationBar: const CustomNavBar(index: 0),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          SizedBox(height: 20,),
           const NewsOfTheDay(),
           Padding(
             padding: const EdgeInsets.only(left: 25, top: 20, right: 25),
