@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
 import 'package:news_app/helper/news_data.dart';
-import '../../helper/news_category_data.dart';
-import '../../model/news_category_model.dart';
 import '../../model/news_model.dart';
 import '../../widgets/news_of_day.dart';
 import '../NewsCetegory/news_category.dart';
@@ -21,7 +19,6 @@ class _NewsHomeState extends State<NewsHome> {
 
   //get the list of the news
   List<NewsModel> newsArticle = [];
-  List<NewsCategoryModel> newsCategory = [];
 
   getNews() async {
     NewsData newsData = NewsData();
@@ -36,7 +33,6 @@ class _NewsHomeState extends State<NewsHome> {
     // TODO: implement initState
     super.initState();
     getNews();
-    newsCategory = getCategory();
   }
 
   bool hasData = true;
@@ -54,12 +50,15 @@ class _NewsHomeState extends State<NewsHome> {
               elevation: 0,
               leading: Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: SingleChildScrollView(
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/userProfile');
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.black,
+                        color: Colors.black54,
                         width: 2,
                       ),
                     ),
@@ -68,7 +67,7 @@ class _NewsHomeState extends State<NewsHome> {
                         'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
                       ),
                       backgroundColor: Colors.grey,
-                      radius: 20, // change the radius to 20
+                      radius: 40, // change the radius to 20
                     ),
                   ),
                 ),
@@ -176,14 +175,14 @@ class _NewsHomeState extends State<NewsHome> {
                       Row(
                         children: [
                           Container(
-                            height: 100,
-                            width: 80,
+                            height: 120,
+                            width: 100,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(
                                   8), // Change the border radius value
                               color: CustomColor.secondaryColor,
                               image: DecorationImage(
-                                image: NetworkImage(imageUrl),
+                                image: NetworkImage(newsArticle[index].urlToImage),
                                 fit: BoxFit.cover,
                               ),
                             ),

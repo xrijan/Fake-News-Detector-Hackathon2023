@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../colors.dart';
 import '../model/news_model.dart';
@@ -25,16 +27,6 @@ class _NewWidgetState extends State<NewWidget> {
     return Container(
       padding: const EdgeInsets.all(12.0),
       width: double.infinity,
-      decoration: const BoxDecoration(
-        color: CustomColor.secondaryColor,
-        border: Border(
-            top: BorderSide(
-              color: Colors.white,
-            ),
-            bottom: BorderSide(
-              color: Colors.white,
-            )),
-      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -73,16 +65,19 @@ class _NewWidgetState extends State<NewWidget> {
                 width: 100,
               ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.share)),
+                  onPressed: () {
+
+                  }, icon: const Icon(Icons.share)),
               IconButton(
                   onPressed: () {
-                    print(widget.newsArticle[widget.index].url);
-                    print(widget.newsArticle[widget.index].title);
-                    print(widget.newsArticle[widget.index].description);
+
                   },
                   icon: const Icon(Icons.verified_user_rounded)),
             ],
-          )
+          ),
+          const Divider(
+            color: Colors.black,
+          ),
         ],
       ),
     );

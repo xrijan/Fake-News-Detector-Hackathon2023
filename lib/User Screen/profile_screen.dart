@@ -20,6 +20,16 @@ class _UserProfileState extends State<UserProfile> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.backspace))),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -48,7 +58,7 @@ class _UserProfileState extends State<UserProfile> {
                       width: 32,
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -96,8 +106,10 @@ class _UserProfileState extends State<UserProfile> {
               const SizedBox(
                 height: 10,
               ),
-              Image.asset('assets/google.png',height: 20,),
-
+              Image.asset(
+                'assets/google.png',
+                height: 20,
+              ),
               const SizedBox(
                 height: 60,
               ),
@@ -127,11 +139,9 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
               ),
-
               const SizedBox(
                 height: 40,
               ),
-
               GestureDetector(
                 onTap: () {
                   // do something when the container is tapped
@@ -159,7 +169,7 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
               const SizedBox(
-                height: 280,
+                height: 230,
               ),
               GestureDetector(
                 onTap: () {
@@ -188,7 +198,6 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

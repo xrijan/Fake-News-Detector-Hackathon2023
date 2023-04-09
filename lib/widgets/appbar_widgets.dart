@@ -20,7 +20,9 @@ class _AppBarWidgetsState extends State<AppBarWidgets> {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pop(context);
+        },
         icon: Icon(widget.icon,color: Colors.black,),
       ),
       title: Text(widget.title,style: const TextStyle(color: Colors.black),),

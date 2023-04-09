@@ -15,7 +15,6 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
   List<NewsCategoryModel> newsCategory = [];
   List<NewsModel> newsArticle = [];
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -40,7 +39,11 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SelectedNewsCategories(title: newsCategory[index].name, category: newsCategory[index].name.toLowerCase(),)),
+                  MaterialPageRoute(
+                      builder: (context) => SelectedNewsCategories(
+                            title: newsCategory[index].name,
+                            category: newsCategory[index].name.toLowerCase(),
+                          )),
                 );
               },
               child: Container(
