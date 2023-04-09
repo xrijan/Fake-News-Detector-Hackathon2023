@@ -55,7 +55,7 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                   children: [
                     const Text(
                       "Rao IIT Academy institute director held for 'Rs 14 crore GST fraud fggfghfghfgfh fgjffjfh ghhjghj'",
-                      style: TextStyle(color: Colors.white, fontSize: 21),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     const SizedBox(
                       height: 16

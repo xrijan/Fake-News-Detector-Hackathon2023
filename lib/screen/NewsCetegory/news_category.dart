@@ -29,7 +29,7 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: SizedBox(
-        height: 100,
+        height: 80,
         child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
@@ -47,8 +47,8 @@ class _NewsCategoryScreenState extends State<NewsCategoryScreen> {
                 );
               },
               child: Container(
-                width: 100.0,
-                height: 100.0,
+                width: 80,
+                height: 80,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 decoration: BoxDecoration(
                   color: Colors.grey,

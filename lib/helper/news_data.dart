@@ -29,7 +29,10 @@ class NewsData {
               description: elements['description'],
               url: elements['url'],
               urlToImage: elements['urlToImage'],
-              publishedAt: elements['publishedAt']);
+              publishedAt: elements['publishedAt'],
+              
+
+          );
           newsFromRestApi.add(newsModel);
         }
       });
