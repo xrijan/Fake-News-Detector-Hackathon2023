@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/screen/News%20Updates/news_details.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../colors.dart';
 import '../model/news_model.dart';
@@ -74,13 +75,13 @@ class _NewWidgetState extends State<NewWidget> {
                 ),
                 IconButton(
                     onPressed: () {
-
+                      Share.share(widget.newsArticle[widget.index].url);
                     }, icon: const Icon(Icons.share)),
-                IconButton(
-                    onPressed: () {
-
-                    },
-                    icon: const Icon(Icons.verified_user_rounded)),
+                // IconButton(
+                //     onPressed: () {
+                //
+                //     },
+                //     icon: const Icon(Icons.verified_user_rounded)),
               ],
             ),
             const Divider(

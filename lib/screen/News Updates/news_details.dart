@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 import '../../model/news_model.dart';
+import '../../webview.dart';
 
 class NewsDetails extends StatefulWidget {
   const NewsDetails({required this.newsArticle, required this.index, Key? key})
@@ -81,31 +83,14 @@ class _NewsDetailsState extends State<NewsDetails> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        // handle search button press
+                        Share.share(widget.newsArticle[widget.index].url);
+
                       },
-                      icon: const Icon(Icons.verified_user_outlined,size: 20,),
+                      icon: const Icon(Icons.share,size: 20,),
                       color: Colors.black,
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Container(
-                    width: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: CustomColor.secondaryColor,
-                      border: Border.all(
-                        color: Colors.grey.shade50,
-                        width: 2,
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        // handle liked button press
-                      },
-                      icon: const Icon(Icons.bookmark_border,size: 20,),
-                      color: Colors.black,
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(
@@ -149,11 +134,16 @@ class _NewsDetailsState extends State<NewsDetails> {
                     width: 100,
                     child: ElevatedButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WebViewApp(url: widget.newsArticle[widget.index].url)),
+                        );
                         ///pass link
                       },
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.deepPurple),
+                            MaterialStateProperty.all(Colors.black),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),

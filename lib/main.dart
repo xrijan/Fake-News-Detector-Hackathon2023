@@ -4,7 +4,8 @@ import 'package:news_app/screen/News%20Updates/news_home.dart';
 import 'package:news_app/screen/News%20Updates/today_highlights.dart';
 import 'package:news_app/screen/NewsCetegory/news_category.dart';
 import 'package:news_app/screen/onboarding.dart';
-import 'package:news_app/test.dart';
+import 'package:share_plus/share_plus.dart';
+
 
 
 void main() {
@@ -27,7 +28,6 @@ class MyApp extends StatelessWidget {
         '/categories':(context) => const NewsCategoryScreen(),
         '/animatedList': (context) =>  const MoreTodayHighlights(),
         '/userProfile' : (context) => const UserProfile(),
-        '/test' : (context) => const Test(),
       },
     );
   }

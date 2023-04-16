@@ -13,6 +13,17 @@ class NewsModel {
         required this.description,
         required this.url,
         required this.urlToImage,
-        required this.publishedAt
+        required this.publishedAt,
       });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'author': author,
+      'title': title,
+      'description': description,
+      'url': url,
+      'urlToImage': urlToImage,
+      'publishedAt': publishedAt,
+    };
+  }
 }

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
 import 'package:news_app/helper/news_data.dart';
 import 'package:news_app/screen/News%20Updates/news_details.dart';
+import 'package:news_app/webview.dart';
+import 'package:share_plus/share_plus.dart';
+import '../../helper/database.dart';
 import '../../model/news_model.dart';
 import '../../widgets/news_of_day.dart';
 import '../NewsCetegory/news_category.dart';
+import '../search.dart';
 
 
 class NewsHome extends StatefulWidget {
@@ -15,6 +19,10 @@ class NewsHome extends StatefulWidget {
 }
 
 class _NewsHomeState extends State<NewsHome> {
+
+  //database
+  DBHelper dbHelper = DBHelper();
+
   final String imageUrl =
       'https://www.thesocialhistorian.com/wp-content/uploads/2016/01/Duke_Humfreys_Library_Interior_6_Bodleian_Library_Oxford_UK_-_Diliff-2048x1523.jpg';
 
@@ -90,50 +98,52 @@ class _NewsHomeState extends State<NewsHome> {
                   child: IconButton(
                     onPressed: () {
                       // handle search button press
+                      showSearch(context: context, delegate: CustomSearchDelegate());
                     },
                     icon: const Icon(Icons.search,size: 20,),
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(width: 16),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Container(
-                    width: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: CustomColor.secondaryColor,
-                      border: Border.all(
-                        color: Colors.grey.shade50,
-                        width: 2,
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        // handle liked button press
-                      },
-                      icon: Stack(
-                        children: [
-                          const Icon(Icons.bookmark_border,size: 20,),
-                          if (hasData)
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                // const SizedBox(width: 16),
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 16),
+                //   child: Container(
+                //     width: 40,
+                //     decoration: BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       color: CustomColor.secondaryColor,
+                //       border: Border.all(
+                //         color: Colors.grey.shade50,
+                //         width: 2,
+                //       ),
+                //     ),
+                //     child: IconButton(
+                //       onPressed: () {
+                //         // handle liked button press
+                //       },
+                //       icon: Stack(
+                //         children: [
+                //           const Icon(Icons.bookmark_border,size: 20,),
+                //           if (hasData)
+                //             Positioned(
+                //               top: 0,
+                //               right: 0,
+                //               child: Container(
+                //                 width: 8,
+                //                 height: 8,
+                //                 decoration: const BoxDecoration(
+                //                   shape: BoxShape.circle,
+                //                   color: Colors.red,
+                //                 ),
+                //               ),
+                //             ),
+                //         ],
+                //       ),
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                // ),
+                SizedBox(width: 10,)
               ],
             ),
             const SizedBox(
@@ -221,8 +231,10 @@ class _NewsHomeState extends State<NewsHome> {
                                           style: const TextStyle(
                                               fontSize: 10, color: Colors.grey)),
                                       IconButton(
-                                        icon: const Icon(Icons.bookmark_border),
-                                        onPressed: () {},
+                                        icon: const Icon(Icons.share),
+                                        onPressed: () {
+                                          Share.share(newsArticle[index].url);
+                                        },
                                       ),
                                     ],
                                   ),
