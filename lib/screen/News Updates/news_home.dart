@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
 import 'package:news_app/helper/news_data.dart';
 import 'package:news_app/screen/News%20Updates/news_details.dart';
-import 'package:news_app/webview.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../helper/database.dart';
 import '../../model/news_model.dart';
 import '../../widgets/news_of_day.dart';
 import '../NewsCetegory/news_category.dart';
-import '../search.dart';
-
+import '../NewsSearch/search.dart';
 
 class NewsHome extends StatefulWidget {
   const NewsHome({Key? key}) : super(key: key);
@@ -19,7 +17,6 @@ class NewsHome extends StatefulWidget {
 }
 
 class _NewsHomeState extends State<NewsHome> {
-
   //database
   DBHelper dbHelper = DBHelper();
 
@@ -36,9 +33,6 @@ class _NewsHomeState extends State<NewsHome> {
       newsArticle = newsData.newsFromRestApi;
     });
   }
-
-
-
 
   @override
   void initState() {
@@ -61,9 +55,62 @@ class _NewsHomeState extends State<NewsHome> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               leading: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: GestureDetector(
-                  onTap: (){
+                padding: const EdgeInsets.only(left: 15),
+                child: Image.asset('assets/ground.png'),
+              ),
+              // leading: Padding(
+              //   padding: const EdgeInsets.only(left: 16),
+              //   child: GestureDetector(
+              //     onTap: (){
+              //       Navigator.pushNamed(context, '/userProfile');
+              //     },
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         border: Border.all(
+              //           color: Colors.black54,
+              //           width: 2,
+              //         ),
+              //       ),
+              //       child: const CircleAvatar(
+              //         backgroundImage: NetworkImage(
+              //           'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
+              //         ),
+              //         backgroundColor: Colors.grey,
+              //         radius: 40, // change the radius to 20
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              actions: [
+                Container(
+                  width: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: CustomColor.secondaryColor,
+                    border: Border.all(
+                      color: Colors.grey.shade50,
+                      width: 2,
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      // handle search button press
+                      showSearch(
+                          context: context, delegate: CustomSearchDelegate());
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                      size: 20,
+                    ),
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
                     Navigator.pushNamed(context, '/userProfile');
                   },
                   child: Container(
@@ -79,82 +126,31 @@ class _NewsHomeState extends State<NewsHome> {
                         'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
                       ),
                       backgroundColor: Colors.grey,
-                      radius: 40, // change the radius to 20
+                      radius: 14, // change the radius to 20
                     ),
                   ),
                 ),
-              ),
-              actions: [
-                Container(
-                  width: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: CustomColor.secondaryColor,
-                    border: Border.all(
-                      color: Colors.grey.shade50,
-                      width: 2,
-                    ),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      // handle search button press
-                      showSearch(context: context, delegate: CustomSearchDelegate());
-                    },
-                    icon: const Icon(Icons.search,size: 20,),
-                    color: Colors.black,
-                  ),
-                ),
-                // const SizedBox(width: 16),
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 16),
-                //   child: Container(
-                //     width: 40,
-                //     decoration: BoxDecoration(
-                //       shape: BoxShape.circle,
-                //       color: CustomColor.secondaryColor,
-                //       border: Border.all(
-                //         color: Colors.grey.shade50,
-                //         width: 2,
-                //       ),
-                //     ),
-                //     child: IconButton(
-                //       onPressed: () {
-                //         // handle liked button press
-                //       },
-                //       icon: Stack(
-                //         children: [
-                //           const Icon(Icons.bookmark_border,size: 20,),
-                //           if (hasData)
-                //             Positioned(
-                //               top: 0,
-                //               right: 0,
-                //               child: Container(
-                //                 width: 8,
-                //                 height: 8,
-                //                 decoration: const BoxDecoration(
-                //                   shape: BoxShape.circle,
-                //                   color: Colors.red,
-                //                 ),
-                //               ),
-                //             ),
-                //         ],
-                //       ),
-                //       color: Colors.black,
-                //     ),
-                //   ),
-                // ),
-                SizedBox(width: 10,)
+                SizedBox(
+                  width: 10,
+                )
               ],
             ),
             const SizedBox(
               height: 20,
+            ),
+            const Padding(
+              padding: EdgeInsets.all(15),
+              child: Text(
+                "Trending Stories",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
             const NewsOfTheDay(),
             const Padding(
               padding: EdgeInsets.all(25),
               child: Text(
                 "Explore",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             const NewsCategoryScreen(),
@@ -165,7 +161,7 @@ class _NewsHomeState extends State<NewsHome> {
                 children: [
                   const Text(
                     "Today Highlights",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   TextButton(
                     onPressed: () {
@@ -173,7 +169,7 @@ class _NewsHomeState extends State<NewsHome> {
                     },
                     child: const Text(
                       'Show More',
-                      style: TextStyle(color: Colors.grey,fontSize: 12),
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   )
                 ],
@@ -184,74 +180,89 @@ class _NewsHomeState extends State<NewsHome> {
             ),
             Column(
               children: List.generate(newsArticle.length, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NewsDetails(newsArticle: newsArticle, index: index)),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    8), // Change the border radius value
-                                color: CustomColor.secondaryColor,
-                                image: DecorationImage(
-                                  image: NetworkImage(newsArticle[index].urlToImage),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                return newsArticle.isEmpty
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewsDetails(
+                                    newsArticle: newsArticle, index: index)),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25, right: 25),
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  const Text('News Category',
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.grey)),
-                                  Text(newsArticle[index].title,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(newsArticle[index].publishedAt,
-                                          style: const TextStyle(
-                                              fontSize: 10, color: Colors.grey)),
-                                      IconButton(
-                                        icon: const Icon(Icons.share),
-                                        onPressed: () {
-                                          Share.share(newsArticle[index].url);
-                                        },
+                                  Container(
+                                    height: 120,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          8), // Change the border radius value
+                                      color: CustomColor.secondaryColor,
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            newsArticle[index].urlToImage),
+                                        fit: BoxFit.cover,
                                       ),
-                                    ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        newsArticle[index].author.isEmpty
+                                            ? const Text('News Api',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey))
+                                            : Text(newsArticle[index].author,
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey)),
+                                        Text(newsArticle[index].title,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(newsArticle[index].publishedAt,
+                                                style: const TextStyle(
+                                                    fontSize: 10,
+                                                    color: Colors.grey)),
+                                            IconButton(
+                                              icon: const Icon(Icons.share),
+                                              onPressed: () {
+                                                Share.share(
+                                                    newsArticle[index].url);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                              const Divider(
+                                color: Colors.grey,
+                              )
+                            ],
+                          ),
                         ),
-                        const Divider(
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                );
+                      );
               }),
-            )
+            ),
           ],
         ),
       ),

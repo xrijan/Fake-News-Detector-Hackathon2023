@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/screen/NewsCetegory/news_category.dart';
+import 'package:news_app/helper/news_data.dart';
+import '../model/news_model.dart';
+import '../screen/News Updates/news_details.dart';
 import 'custom_text_tag.dart';
 
 class NewsOfTheDay extends StatefulWidget {
@@ -10,8 +12,25 @@ class NewsOfTheDay extends StatefulWidget {
 }
 
 class _NewsOfTheDayState extends State<NewsOfTheDay> {
-  final String imageUrl =
-      'https://www.thesocialhistorian.com/wp-content/uploads/2017/05/The_fin_de_siècle_newspaper_proprietor_cropped-1200x640.jpg';
+  int index = 0;
+  List<NewsModel> newsArticle = [];
+  getNews() async {
+    TopHeadlineBBC topHeadlineBBC = TopHeadlineBBC();
+    await topHeadlineBBC.getNews();
+    setState(() {
+      newsArticle = topHeadlineBBC.newsFromRestApiBBC;
+    });
+  }
+
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getNews();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,7 +42,7 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
           borderRadius: BorderRadius.circular(16),
           color: Colors.grey,
           image: DecorationImage(
-            image: NetworkImage(imageUrl),
+            image: NetworkImage(newsArticle[index].urlToImage),
             fit: BoxFit.cover,
           ),
         ),
@@ -53,8 +72,8 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Rao IIT Academy institute director held for 'Rs 14 crore GST fraud fggfghfghfgfh fgjffjfh ghhjghj'",
+                   Text(
+                      newsArticle[index].title,
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     const SizedBox(
@@ -83,7 +102,11 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                           width: 10,
                         ),
                         TextButton(onPressed: () {
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewsDetails(newsArticle: newsArticle, index: index)),
+                          );
                         }, child: const Text("Learn More",style: TextStyle(color: Colors.grey),))
                       ],
                     ),
