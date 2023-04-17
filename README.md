@@ -12,4 +12,4 @@ A few resources to get you started if this is your first Flutter project:
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
 Onboarding Screen
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-04-17 at 20 46 26](https://user-images.githubusercontent.com/96490513/232533222-77c227f9-e75c-4d73-bc47-96152861aa99.png)
+- ![Simulator Screen Shot - iPhone 14 Pro Max - 2023-04-17 at 20 46 26](https://user-images.githubusercontent.com/96490513/232533222-77c227f9-e75c-4d73-bc47-96152861aa99.png)
