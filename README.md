@@ -11,6 +11,5 @@ A few resources to get you started if this is your first Flutter project:
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Onboarding Screen
+![Simulator Screen Shot - iPhone 14 Pro Max - 2023-04-17 at 20 46 26](https://user-images.githubusercontent.com/96490513/232533222-77c227f9-e75c-4d73-bc47-96152861aa99.png)
