@@ -14,9 +14,17 @@ class _WebViewAppState extends State<WebViewApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Web View App'),
+        title:  const Text('Web View App',style: TextStyle(color: Colors.black),),
+        leading: IconButton(icon: Icon(Icons.backspace,color: Colors.black,), onPressed: () {
+          Navigator.pop(context);
+        },),
+        backgroundColor: Colors.white,
       ),
-      body: WebView(
+      body: widget.url.isEmpty ? const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+        ),
+      ) : WebView(
         initialUrl: widget.url,
       ),
     );
