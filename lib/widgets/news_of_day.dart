@@ -12,7 +12,7 @@ class NewsOfTheDay extends StatefulWidget {
 }
 
 class _NewsOfTheDayState extends State<NewsOfTheDay> {
-  int index = 0;
+
   List<NewsModel> newsArticle = [];
   getNews() async {
     TopHeadlineBBC topHeadlineBBC = TopHeadlineBBC();
@@ -42,7 +42,7 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
           borderRadius: BorderRadius.circular(16),
           color: Colors.grey,
           image: DecorationImage(
-            image: NetworkImage(newsArticle[index].urlToImage),
+            image: NetworkImage(newsArticle.first.urlToImage),
             fit: BoxFit.cover,
           ),
         ),
@@ -73,7 +73,7 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                    Text(
-                      newsArticle[index].title,
+                      newsArticle.first.title,
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     const SizedBox(
@@ -105,7 +105,7 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NewsDetails(newsArticle: newsArticle, index: index)),
+                                builder: (context) => NewsDetails(newsArticle: newsArticle, index: 0)),
                           );
                         }, child: const Text("Learn More",style: TextStyle(color: Colors.grey),))
                       ],

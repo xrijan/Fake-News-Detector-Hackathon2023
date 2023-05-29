@@ -1,204 +1,164 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
+import 'package:news_app/model/user_model.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key}) : super(key: key);
+import '../auth.dart';
+import '../screen/login.dart';
+
+class UserInfoScreen extends StatefulWidget {
+  const UserInfoScreen({Key? key, required User user})
+      : _user = user,
+        super(key: key);
+
+  final User _user;
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  _UserInfoScreenState createState() => _UserInfoScreenState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  late User _user;
+  bool _isSigningOut = false;
+  //
+  Route _routeToSignInScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = const Offset(-1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    _user = widget._user;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColor.primaryColor,
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text('Profile',style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.popAndPushNamed(context, '/home');
+          }, icon: Icon(Icons.backspace,color: Colors.black,))
+        ],
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 40, right: 40),
+          padding: const EdgeInsets.only(
+            left: 16.0,
+            right: 16.0,
+            bottom: 20.0,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
+              Row(),
+              _user.photoURL != null
+                  ? ClipOval(
+                      child: Material(
+                        child: Image.network(
+                          _user.photoURL!,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    )
+                  : const ClipOval(
+                      child: Material(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Icon(
+                            Icons.person,
+                            size: 60,
+                          ),
+                        ),
+                      ),
+                    ),
+              const SizedBox(height: 16.0),
+              const Text(
+                'Hello',
+                style: TextStyle(
+                  fontSize: 26,
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                _user.displayName!,
+                style: const TextStyle(
+                  fontSize: 26,
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                '( ${_user.email!} )',
+                style: const TextStyle(
+                  fontSize: 20,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 24.0),
+              const Text(
+                'You are now signed in using your Google account. To sign out of your account, click the "Sign Out" button below.',
+                style: TextStyle(fontSize: 14, letterSpacing: 0.2),
+              ),
+              const SizedBox(height: 16.0),
+              Spacer(),
+              _isSigningOut
+                  ? const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                  : ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.redAccent,
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          _isSigningOut = true;
+                        });
+                        await Authentication.signOut(context: context);
+                        setState(() {
+                          _isSigningOut = false;
+                        });
+                        Navigator.of(context)
+                            .pushReplacement(_routeToSignInScreen());
                       },
-                      icon: const Icon(Icons.backspace))),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: CustomColor.secondaryColor,
-                        width: 4,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: Text(
+                          'Sign Out',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 2,
+                          ),
+                        ),
                       ),
                     ),
-                    child: const CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
-                      ),
-                      radius: 50,
-                      backgroundColor: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  const SizedBox(
-                    height: 100,
-                    child: VerticalDivider(
-                      color: Colors.black,
-                      thickness: 1,
-                      width: 32,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Joined',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        '12 Oct , 6PM',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              const Text(
-                'Rijan Rayamajhi',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'rayarijan5051@gmail.com',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Image.asset(
-                'assets/google.png',
-                height: 20,
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-              GestureDetector(
-                onTap: () {
-                  // do something when the container is tapped
-                },
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: CustomColor.secondaryColor,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.verified_user, color: Colors.blueAccent),
-                      SizedBox(width: 12.0),
-                      Text(
-                        'News Analysis',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              GestureDetector(
-                onTap: () {
-                  // do something when the container is tapped
-                },
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: CustomColor.secondaryColor,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.picture_as_pdf, color: Colors.blueAccent),
-                      SizedBox(width: 12.0),
-                      Text(
-                        'About Model',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 230,
-              ),
-              GestureDetector(
-                onTap: () {
-                  // do something when the container is tapped
-                },
-                child: Container(
-                  height: 60,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: CustomColor.secondaryColor,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.logout, color: Colors.redAccent),
-                      SizedBox(width: 12.0),
-                      Text(
-                        'Log Out',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 10,)
             ],
           ),
         ),

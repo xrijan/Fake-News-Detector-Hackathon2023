@@ -3,9 +3,8 @@ import 'package:news_app/User%20Screen/profile_screen.dart';
 import 'package:news_app/screen/News%20Updates/news_home.dart';
 import 'package:news_app/screen/News%20Updates/today_highlights.dart';
 import 'package:news_app/screen/NewsCetegory/news_category.dart';
-import 'package:news_app/screen/onboarding.dart';
 
-import 'login.dart';
+import 'screen/login.dart';
 
 
 
@@ -23,12 +22,11 @@ class MyApp extends StatelessWidget {
       title: 'News Shield',
       initialRoute: '/',
       routes: {
-        '/': (context) =>   SignInScreen(),
+        '/': (context) =>   const SignInScreen(),
         '/home' : (context) =>  const NewsHome(),
         '/highlights' : (context) => const MoreTodayHighlights(),
         '/categories':(context) => const NewsCategoryScreen(),
         '/animatedList': (context) =>  const MoreTodayHighlights(),
-        '/userProfile' : (context) => const UserProfile(),
       },
     );
   }
