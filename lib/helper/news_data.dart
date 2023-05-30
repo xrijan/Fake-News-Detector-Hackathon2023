@@ -13,7 +13,7 @@ class NewsData {
   Future<void> getNews() async {
 
     const newsUrl =
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=810dca7667b543e19007e6ee3b78b665';
+        'https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=810dca7667b543e19007e6ee3b78b665';
 
     try {
     var response = await get(Uri.parse(newsUrl));

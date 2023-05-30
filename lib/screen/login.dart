@@ -1,20 +1,23 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/model/user_model.dart';
-import '../User Screen/profile_screen.dart';
-import '../auth.dart';
+import 'package:news_app/screen/News%20Updates/news_home.dart';
+import 'package:provider/provider.dart';
+import '../helper/user_provider.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
 
   @override
-  SignInScreenState createState() => SignInScreenState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class SignInScreenState extends State<SignInScreen> {
+class _LogInScreenState extends State<LogInScreen> {
+  bool isSigningIn = false;
+
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -31,105 +34,64 @@ class SignInScreenState extends State<SignInScreen> {
             bottom: 20.0,
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             children: [
-              Row(),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
 
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-              FutureBuilder(
-                future: Authentication.initializeFirebase(context: context),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Error initializing Firebase');
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    return GoogleSignInButton();
-                  }
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GoogleSignInButton extends StatefulWidget {
-  @override
-  _GoogleSignInButtonState createState() => _GoogleSignInButtonState();
-}
-
-class _GoogleSignInButtonState extends State<GoogleSignInButton> {
-  bool _isSigningIn = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: _isSigningIn
-          ? const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            )
-          : SizedBox(
-        height: 60,
-        width: 220,
-        child: ElevatedButton(
-          onPressed: () async {
-            setState(() {
-              _isSigningIn = true;
-            });
-
-            User? user =
-            await Authentication.signInWithGoogle(context: context);
-
-            setState(() {
-              _isSigningIn = false;
-            });
-
-            setState(() {
-              if (user != null) {
-                SetUser(photoURL: user.photoURL!, displayName: user.displayName!, email: user.email! , );
-              }
-            });
-
-            if (user != null) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => UserInfoScreen(
-                    user: user,
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: isSigningIn
+                    ?
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+                    : SizedBox(
+                  height: 60,
+                  width: 220,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        isSigningIn = true;
+                      });
+                      userProvider.signInWithGoogle();
+                      setState(() {
+                        isSigningIn = false;
+                      });
+                      if (user != null) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => const NewsHome(),
+                          ),
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/google_icon.webp',
+                          width: 24, // Set the desired image width
+                          height:
+                          24, // Set the desired image height// Set the desired image color
+                        ),
+                        const SizedBox(
+                            width: 8), // Add spacing between the icon and text
+                        const Text(
+                          'Sign in with Google',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              );
-            }
-
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.indigo),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/google_icon.webp',
-                width: 24, // Set the desired image width
-                height: 24, // Set the desired image height// Set the desired image color
-              ),
-              const SizedBox(width: 8), // Add spacing between the icon and text
-              const Text('Sign in with Google',),
+              )
             ],
           ),
         ),

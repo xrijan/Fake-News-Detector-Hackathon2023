@@ -1,167 +1,194 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/colors.dart';
-import 'package:news_app/model/user_model.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../helper/user_provider.dart';
 
-import '../auth.dart';
-import '../screen/login.dart';
-
-class UserInfoScreen extends StatefulWidget {
-  const UserInfoScreen({Key? key, required User user})
-      : _user = user,
-        super(key: key);
-
-  final User _user;
+class ProfileUi extends StatefulWidget {
+  const ProfileUi({Key? key}) : super(key: key);
 
   @override
-  _UserInfoScreenState createState() => _UserInfoScreenState();
+  State<ProfileUi> createState() => _ProfileUiState();
 }
 
-class _UserInfoScreenState extends State<UserInfoScreen> {
-  late User _user;
-  bool _isSigningOut = false;
-  //
-  Route _routeToSignInScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = const Offset(-1.0, 0.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
+class _ProfileUiState extends State<ProfileUi> {
+  ///linkdin
+  void _launchLinkedInProfile() async {
+    final Uri url = Uri.parse('https://www.linkedin.com/login?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin');
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  ///github
+  void _launchGitHubProfile() async {
+    final Uri url = Uri.parse('https://github.com/xrijan');
 
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  ///mail
+  void _launchMail() async {
+    final Uri url = Uri.parse('https://mail.google.com/mail/u/0/#inbox');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
-  @override
-  void initState() {
-    _user = widget._user;
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
+
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: const Text('Profile',style: TextStyle(color: Colors.white),),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.popAndPushNamed(context, '/home');
-          }, icon: Icon(Icons.backspace,color: Colors.black,))
-        ],
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16.0,
-            right: 16.0,
-            bottom: 20.0,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
             children: [
-              Row(),
-              _user.photoURL != null
-                  ? ClipOval(
-                      child: Material(
-                        child: Image.network(
-                          _user.photoURL!,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    )
-                  : const ClipOval(
-                      child: Material(
-                        child: Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Icon(
-                            Icons.person,
-                            size: 60,
-                          ),
-                        ),
-                      ),
+              if (user != null)
+                SizedBox(
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.network(
+                    user.photoURL!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                title: const Text(
+                  'Profile',
+                  style: TextStyle(color: Colors.white),
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.backspace_outlined,
+                    color: Colors.black,
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      userProvider.signOut();
+                    },
+                    icon: const Icon(
+                      Icons.logout,
+                      color: Colors.red,
                     ),
-              const SizedBox(height: 16.0),
-              const Text(
-                'Hello',
-                style: TextStyle(
-                  fontSize: 26,
-                ),
+                  )
+                ],
               ),
-              const SizedBox(height: 8.0),
-              Text(
-                _user.displayName!,
-                style: const TextStyle(
-                  fontSize: 26,
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                '( ${_user.email!} )',
-                style: const TextStyle(
-                  fontSize: 20,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const SizedBox(height: 24.0),
-              const Text(
-                'You are now signed in using your Google account. To sign out of your account, click the "Sign Out" button below.',
-                style: TextStyle(fontSize: 14, letterSpacing: 0.2),
-              ),
-              const SizedBox(height: 16.0),
-              Spacer(),
-              _isSigningOut
-                  ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                  : ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.redAccent,
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          _isSigningOut = true;
-                        });
-                        await Authentication.signOut(context: context);
-                        setState(() {
-                          _isSigningOut = false;
-                        });
-                        Navigator.of(context)
-                            .pushReplacement(_routeToSignInScreen());
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                        child: Text(
-                          'Sign Out',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                      ),
-                    ),
             ],
           ),
-        ),
+
+          ///name
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              user!.displayName!,
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
+
+          ///email
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              user.email!,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+
+          const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Divider(
+              color: Colors.grey,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              'About Developer ',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              'Rijan Rayamajhi.',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+                'Currently pursuing  Undergraduate from Alliance University in Information and Technology. A Sophomore with sound knowledge in programming ‚mathematic and statics, computer architecture, computer networking, internet and web.',
+                style: TextStyle(fontSize: 16, color: Colors.grey.shade700)),
+          ),
+
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              'Connect',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                InkWell(
+                    onTap: () async {
+                      _launchLinkedInProfile();
+                    },
+                    child: Image.asset(
+                      'assets/linkedin.png',
+                      height: 40,
+                    )),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () async {
+                    _launchGitHubProfile();
+                  },
+                  child :Image.asset(
+                    'assets/github.png',
+                    height: 40,
+                  ),
+                ),
+
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                    onTap: () async {
+                      _launchMail();
+                    },
+                  child: Image.asset(
+                    'assets/mail-2.png',
+                    height: 40,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

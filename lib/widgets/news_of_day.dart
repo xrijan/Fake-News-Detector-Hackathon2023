@@ -12,8 +12,8 @@ class NewsOfTheDay extends StatefulWidget {
 }
 
 class _NewsOfTheDayState extends State<NewsOfTheDay> {
-
   List<NewsModel> newsArticle = [];
+
   getNews() async {
     TopHeadlineBBC topHeadlineBBC = TopHeadlineBBC();
     await topHeadlineBBC.getNews();
@@ -22,15 +22,12 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
     });
   }
 
-
-
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getNews();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,10 +38,12 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Colors.grey,
-          image: DecorationImage(
+          image: newsArticle.isNotEmpty
+              ? DecorationImage(
             image: NetworkImage(newsArticle.first.urlToImage),
             fit: BoxFit.cover,
-          ),
+          )
+              : null,
         ),
         child: Stack(
           children: [
@@ -72,16 +71,15 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   Text(
-                      newsArticle.first.title,
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 16
-                    ),
+                    if (newsArticle.isNotEmpty)
+                      Text(
+                        newsArticle.first.title,
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    const SizedBox(height: 16),
                     Row(
                       mainAxisSize: MainAxisSize.min,
-                      children:  [
+                      children: [
                         const CustomTag(
                           backgroundColor: Colors.transparent,
                           children: [
@@ -101,13 +99,25 @@ class _NewsOfTheDayState extends State<NewsOfTheDay> {
                         const SizedBox(
                           width: 10,
                         ),
-                        TextButton(onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NewsDetails(newsArticle: newsArticle, index: 0)),
-                          );
-                        }, child: const Text("Learn More",style: TextStyle(color: Colors.grey),))
+                        TextButton(
+                          onPressed: () {
+                            if (newsArticle.isNotEmpty) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewsDetails(
+                                    newsArticle: newsArticle,
+                                    index: 0,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text(
+                            "Learn More",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
                       ],
                     ),
                   ],

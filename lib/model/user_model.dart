@@ -5,7 +5,3 @@ class SetUser {
     SetUser({required this.photoURL , required this.displayName , required this.email});
 
 }
-
-class GetUser {
-
-}

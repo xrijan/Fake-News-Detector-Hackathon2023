@@ -1,11 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:news_app/colors.dart';
 import 'package:news_app/helper/news_data.dart';
 import 'package:news_app/screen/News%20Updates/news_details.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../helper/database.dart';
+import '../../helper/user_provider.dart';
 import '../../model/news_model.dart';
 import '../../widgets/news_of_day.dart';
 import '../NewsCetegory/news_category.dart';
@@ -41,34 +42,15 @@ class _NewsHomeState extends State<NewsHome> {
     // TODO: implement initState
     super.initState();
     getNews();
-    startLoadingTimer();
   }
-
-  bool _isLoading = true;
-
-  void startLoadingTimer() {
-    Timer(Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
-
-  bool hasData = true;
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
     return Scaffold(
       backgroundColor: CustomColor.primaryColor,
       body: SingleChildScrollView(
-        child: _isLoading
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(child: CircularProgressIndicator()),
-                ],
-              )
-            : Column(
+        child:  Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -79,30 +61,6 @@ class _NewsHomeState extends State<NewsHome> {
                       padding: const EdgeInsets.only(left: 15),
                       child: Image.asset('assets/ground.png'),
                     ),
-                    // leading: Padding(
-                    //   padding: const EdgeInsets.only(left: 16),
-                    //   child: GestureDetector(
-                    //     onTap: (){
-                    //       Navigator.pushNamed(context, '/userProfile');
-                    //     },
-                    //     child: Container(
-                    //       decoration: BoxDecoration(
-                    //         shape: BoxShape.circle,
-                    //         border: Border.all(
-                    //           color: Colors.black54,
-                    //           width: 2,
-                    //         ),
-                    //       ),
-                    //       child: const CircleAvatar(
-                    //         backgroundImage: NetworkImage(
-                    //           'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
-                    //         ),
-                    //         backgroundColor: Colors.grey,
-                    //         radius: 40, // change the radius to 20
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     actions: [
                       Container(
                         width: 40,
@@ -128,11 +86,13 @@ class _NewsHomeState extends State<NewsHome> {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, '/ui');
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -141,16 +101,17 @@ class _NewsHomeState extends State<NewsHome> {
                               width: 2,
                             ),
                           ),
-                          child: const CircleAvatar(
+                          child:  CircleAvatar(
                             backgroundImage: NetworkImage(
-                              'https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg',
+                              user!.displayName!,
                             ),
                             backgroundColor: Colors.grey,
-                            radius: 14, // change the radius to 20
+                            radius: 14,
+                            // change the radius to 20
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       )
                     ],
